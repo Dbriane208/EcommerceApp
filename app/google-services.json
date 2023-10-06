@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "739736185297",
+    "project_id": "ecommerceapp-71ed8",
+    "storage_bucket": "ecommerceapp-71ed8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:739736185297:android:ffc30ab977b24c5083d8f0",
+        "android_client_info": {
+          "package_name": "daniel.brian.ecommerceapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAT02_pMVtAo3-XwH28YBW9gYKFKnrgWFQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
