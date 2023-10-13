@@ -1,14 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.AccountOptionsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ImageView
+        android:id="@+id/blurBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:scaleType="center"
+        android:src="@drawable/blury_background"
+        android:importantForAccessibility="no" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/appName"
+            style="@style/h3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="6dp"
+            android:text="@string/kleine"
+            android:textStyle="bold"
+            app:drawableStartCompat="@drawable/ic_kleine_shape"
+            app:layout_constraintBottom_toTopOf="@id/guidelineLower"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/guidelineUpper" />
+
+        <TextView
+            android:id="@+id/rightAddress"
+            style="@style/h4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/txtAddress"
+            android:textAlignment="center"
+            android:textSize="35sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guidelineUpperText" />
+
+        <TextView
+            android:id="@+id/txtQuality"
+            style="@style/h2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/mrgTopQuality"
+            android:gravity="center"
+            android:text="@string/txtQuality"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="@id/rightAddress"
+            app:layout_constraintStart_toStartOf="@id/rightAddress"
+            app:layout_constraintTop_toBottomOf="@id/rightAddress" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnRegister"
+            style="@style/blueButtonStyle"
+            android:layout_width="@dimen/regBtnWidth"
+            android:layout_height="@dimen/regBtnHt"
+            android:text="@string/register"
+            app:layout_constraintBottom_toBottomOf="@id/guidelineLowerReg"
+            app:layout_constraintEnd_toEndOf="@id/txtQuality"
+            app:layout_constraintStart_toStartOf="@id/txtQuality"
+            app:layout_constraintTop_toBottomOf="@id/guidelineLowerText" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnLogin"
+            style="@style/whiteButtonStyle"
+            android:layout_width="@dimen/regBtnWidth"
+            android:layout_height="@dimen/regBtnHt"
+            android:text="@string/login"
+            android:layout_marginTop="10dp"
+            app:layout_constraintBottom_toBottomOf="@id/guidelineUpperLogin"
+            app:layout_constraintEnd_toEndOf="@id/btnRegister"
+            app:layout_constraintStart_toStartOf="@id/btnRegister"
+            app:layout_constraintTop_toBottomOf="@id/guidelineLowerReg" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineLower"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.23119015" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineUpper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.16689466" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineUpperText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="226dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineLowerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="516dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineLowerReg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="596dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineUpperLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="658dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

@@ -5,4 +5,6 @@
     <dimen name="buttonCorners">5dp</dimen>
     <dimen name="btnHt">55dp</dimen>
     <dimen name="btnWidth">130dp</dimen>
+    <dimen name="regBtnWidth">200dp</dimen>
+    <dimen name="regBtnHt">55dp</dimen>
 </resources>
