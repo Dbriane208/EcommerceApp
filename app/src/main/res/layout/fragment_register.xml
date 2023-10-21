@@ -66,7 +66,7 @@
             tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
 
         <EditText
-            android:id="@+id/LastName"
+            android:id="@+id/lastName"
             style="@style/editText"
             android:layout_width="0dp"
             android:layout_height="55dp"
@@ -104,12 +104,13 @@
             app:layout_constraintTop_toTopOf="@id/guidelinePassStart"
             tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
             android:id="@+id/btnRegister"
             style="@style/blueButtonStyle"
             android:layout_width="0dp"
             android:layout_height="@dimen/regBtnHt"
             android:text="@string/register"
+            app:spinning_bar_color="@color/white"
             app:layout_constraintEnd_toEndOf="@id/guidelineVend"
             app:layout_constraintStart_toStartOf="@id/guidelineVstart"
             app:layout_constraintTop_toTopOf="@id/guidelineRegisterBtn"

@@ -8,16 +8,20 @@ import daniel.brian.ecommerceapp.data.User
 import daniel.brian.ecommerceapp.util.ResourceWrapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel // enables us to do DI without having a viewModelFactory
-class LoginRegisterViewModel @Inject constructor(
+class RegisterViewModel @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
 ) : ViewModel() {
-    private val _register = MutableStateFlow<ResourceWrapper<FirebaseUser>>(ResourceWrapper.Loading)
+    private val _register = MutableStateFlow<ResourceWrapper<FirebaseUser>>(ResourceWrapper.Unspecified())
     val register: Flow<ResourceWrapper<FirebaseUser>> = _register
 
     fun createAccountWithEmailAndPassword(user: User, password: String) {
+        runBlocking {
+            _register.emit(ResourceWrapper.Loading())
+        }
         firebaseAuth.createUserWithEmailAndPassword(user.email, password)
             .addOnSuccessListener { it ->
                 it.user?.let {

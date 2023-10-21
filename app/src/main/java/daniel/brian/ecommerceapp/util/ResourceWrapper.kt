@@ -6,5 +6,6 @@ sealed class ResourceWrapper<out T>(
 ) {
     class Success<T>(data: T?) : ResourceWrapper<T>(data)
     class Error(message: String?) : ResourceWrapper<Nothing>(message = message)
-    object Loading : ResourceWrapper<Nothing>()
+    class Loading<T> : ResourceWrapper<T>()
+    class Unspecified<T> : ResourceWrapper<T>()
 }
