@@ -11,8 +11,11 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import daniel.brian.ecommerceapp.data.User
 import daniel.brian.ecommerceapp.databinding.FragmentRegisterBinding
+import daniel.brian.ecommerceapp.util.RegisterValidation
 import daniel.brian.ecommerceapp.util.ResourceWrapper
 import daniel.brian.ecommerceapp.viewmodel.RegisterViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Suppress("DEPRECATION")
 @AndroidEntryPoint
@@ -35,6 +38,7 @@ class RegisterFragment : Fragment() {
         binding.apply {
             btnRegister.setOnClickListener {
                 val user = User(
+                    // trimming to remove extra spaces
                     firstName.text.toString().trim(),
                     lastName.text.toString().trim(),
                     registerEmail.text.toString().trim(),
@@ -44,6 +48,7 @@ class RegisterFragment : Fragment() {
             }
         }
 
+        // the reason we're using - collect - is because it is pulling the data from Flow in our viewModel
         lifecycleScope.launchWhenStarted {
             viewModel.register.collect {
                 when (it) {
@@ -59,7 +64,30 @@ class RegisterFragment : Fragment() {
                         Log.d("test", it.data.toString())
                         binding.btnRegister.revertAnimation()
                     }
+
                     else -> Unit
+                }
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.validation.collect { validation ->
+                if (validation.email is RegisterValidation.Failed) {
+                    withContext(Dispatchers.Main) {
+                        binding.registerEmail.apply {
+                            requestFocus()
+                            error = validation.email.message
+                        }
+                    }
+                }
+
+                if (validation.password is RegisterValidation.Failed) {
+                    withContext(Dispatchers.Main) {
+                        binding.registerPass.apply {
+                            requestFocus()
+                            error = validation.password.message
+                        }
+                    }
                 }
             }
         }

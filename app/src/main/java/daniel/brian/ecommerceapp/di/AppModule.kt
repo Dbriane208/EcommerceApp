@@ -7,10 +7,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-@Module
-@InstallIn(SingletonComponent::class)
+@Module // defines how dependencies are provided and constructed within a Hilt enabled App
+@InstallIn(SingletonComponent::class) // ensures that there is only on instance of FirebaseAuth within the application
 object AppModule {
-    @Provides
-    @Singleton
+    @Provides // defines a provider function which in this case is the provideFirebaseAuth()
+    @Singleton // ensures there is only one instance of the FirebaseAuth
     fun provideFirebaseAuth() = FirebaseAuth.getInstance()
 }
