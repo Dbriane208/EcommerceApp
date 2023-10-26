@@ -2,9 +2,10 @@ package daniel.brian.ecommerceapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import daniel.brian.ecommerceapp.data.User
+import daniel.brian.ecommerceapp.util.Constants.USER_COLLECTION
 import daniel.brian.ecommerceapp.util.RegisterFieldsState
 import daniel.brian.ecommerceapp.util.RegisterValidation
 import daniel.brian.ecommerceapp.util.ResourceWrapper
@@ -20,10 +21,11 @@ import javax.inject.Inject
 @HiltViewModel // enables us to do DI without having a viewModelFactory
 class RegisterViewModel @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
+    private val db: FirebaseFirestore,
 ) : ViewModel() {
     private val _register =
-        MutableStateFlow<ResourceWrapper<FirebaseUser>>(ResourceWrapper.Unspecified())
-    val register: Flow<ResourceWrapper<FirebaseUser>> = _register
+        MutableStateFlow<ResourceWrapper<User>>(ResourceWrapper.Unspecified())
+    val register: Flow<ResourceWrapper<User>> = _register
 
     // Channel don't receive initial value as compared to Flow
     private val _validation = Channel<RegisterFieldsState>()
@@ -40,7 +42,8 @@ class RegisterViewModel @Inject constructor(
             firebaseAuth.createUserWithEmailAndPassword(user.email, password)
                 .addOnSuccessListener { it ->
                     it.user?.let {
-                        _register.value = ResourceWrapper.Success(it)
+                        // save the user to firebase firestore
+                        saveUserInfo(it.uid, user)
                     }
                 }.addOnFailureListener {
                     _register.value = ResourceWrapper.Error(it.message.toString())
@@ -55,6 +58,20 @@ class RegisterViewModel @Inject constructor(
                 _validation.send(registerFieldsState)
             }
         }
+    }
+
+    // taking a unique id on the user who registers which will be stored in firestore together with his data
+    private fun saveUserInfo(userUid: String, user: User) {
+        db.collection(USER_COLLECTION)
+            // unique id of each customer which will be stored in firestore
+            .document(userUid)
+            // saving user info on firebase firestore
+            .set(user)
+            .addOnSuccessListener {
+                _register.value = ResourceWrapper.Success(user)
+            }.addOnFailureListener {
+                _register.value = ResourceWrapper.Error(it.message.toString())
+            }
     }
 
     private fun checkValidation(user: User, password: String): Boolean {
