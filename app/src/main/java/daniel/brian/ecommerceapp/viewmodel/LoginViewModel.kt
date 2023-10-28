@@ -9,9 +9,10 @@ import daniel.brian.ecommerceapp.util.ResourceWrapper
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel(
+class LoginViewModel @Inject constructor(
     // injecting firebaseAuth because we will use the firebaseAuth instance in this viewModel
     private val firebaseAuth: FirebaseAuth,
 ) : ViewModel() {
