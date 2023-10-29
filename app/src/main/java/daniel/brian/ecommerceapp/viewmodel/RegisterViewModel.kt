@@ -25,7 +25,9 @@ class RegisterViewModel @Inject constructor(
 ) : ViewModel() {
     private val _register =
         MutableStateFlow<ResourceWrapper<User>>(ResourceWrapper.Unspecified())
+
     val register: Flow<ResourceWrapper<User>> = _register
+//    val register = _register.asStateFlow() -> The line above can be written as this one.
 
     // Channel don't receive initial value as compared to Flow
     private val _validation = Channel<RegisterFieldsState>()
