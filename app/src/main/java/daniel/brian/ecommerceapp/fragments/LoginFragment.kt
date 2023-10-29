@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import daniel.brian.ecommerceapp.R
 import daniel.brian.ecommerceapp.activities.ShoppingActivity
@@ -34,6 +35,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Navigating to the RegisterFragment
+        binding.txtLoginInfo.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+        }
         binding.apply {
             btnLogin.setOnClickListener {
                 val email = txtEmail.text.toString().trim()
@@ -55,8 +61,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
                     is ResourceWrapper.Success -> {
                         binding.btnLogin.revertAnimation()
-                        Intent(requireActivity(),ShoppingActivity::class.java).also { intent ->
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        Intent(requireActivity(), ShoppingActivity::class.java).also { intent ->
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                             startActivity(intent)
                         }
                     }

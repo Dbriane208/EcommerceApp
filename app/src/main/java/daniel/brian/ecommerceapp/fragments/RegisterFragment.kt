@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import daniel.brian.ecommerceapp.R
 import daniel.brian.ecommerceapp.data.User
 import daniel.brian.ecommerceapp.databinding.FragmentRegisterBinding
 import daniel.brian.ecommerceapp.util.RegisterValidation
@@ -35,6 +37,11 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Navigating to the LoginFragment
+        binding.askLogin.setOnClickListener {
+            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+        }
+
         binding.apply {
             btnRegister.setOnClickListener {
                 val user = User(
