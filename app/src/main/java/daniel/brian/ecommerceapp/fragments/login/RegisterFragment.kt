@@ -1,4 +1,4 @@
-package daniel.brian.ecommerceapp.fragments
+package daniel.brian.ecommerceapp.fragments.login
 
 import android.os.Bundle
 import android.util.Log

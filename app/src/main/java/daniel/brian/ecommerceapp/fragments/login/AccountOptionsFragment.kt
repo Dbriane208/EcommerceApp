@@ -1,4 +1,4 @@
-package daniel.brian.ecommerceapp.fragments
+package daniel.brian.ecommerceapp.fragments.login
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -24,14 +24,14 @@ class AccountOptionsFragment : Fragment(R.layout.fragment_account_options) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Navigating to both the RegisterFragment and the LoginFragment
-         binding.apply {
-             btnRegister.setOnClickListener {
-                 findNavController().navigate(R.id.action_accountOptionsFragment_to_registerFragment)
-             }
+        binding.apply {
+            btnRegister.setOnClickListener {
+                findNavController().navigate(R.id.action_accountOptionsFragment_to_registerFragment)
+            }
 
-             btnLogin.setOnClickListener {
-                 findNavController().navigate(R.id.action_accountOptionsFragment_to_loginFragment)
-             }
-         }
+            btnLogin.setOnClickListener {
+                findNavController().navigate(R.id.action_accountOptionsFragment_to_loginFragment)
+            }
+        }
     }
 }
