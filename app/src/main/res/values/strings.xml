@@ -25,7 +25,9 @@
     <string name="send">Send</string>
     <string name="cancel">Cancel</string>
     <string name="home">Home</string>
-    <string name="search">Search box</string>
+    <string name="search">Search now</string>
     <string name="cart">Cart</string>
     <string name="profile">Profile</string>
+    <string name="deals">Best Deals</string>
+    <string name="products">Best Products</string>
 </resources>
