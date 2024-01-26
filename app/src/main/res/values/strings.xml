@@ -30,4 +30,9 @@
     <string name="profile">Profile</string>
     <string name="deals">Best Deals</string>
     <string name="products">Best Products</string>
+    <string name="price">$1600</string>
+    <string name="scotch_premium">Scotch Premium</string>
+    <string name="add_to_cart">Add to cart</string>
+    <string name="old_price">$2000</string>
+    <string name="see_product">See product</string>
 </resources>

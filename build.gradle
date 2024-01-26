@@ -1,3 +1,4 @@
+// specifically used during the building of the project to allow build script to use specific plugins and tools during building process
 buildscript {
     dependencies {
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.48'

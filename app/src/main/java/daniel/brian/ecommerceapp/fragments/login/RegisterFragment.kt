@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import daniel.brian.ecommerceapp.R
 import daniel.brian.ecommerceapp.data.User
@@ -70,6 +71,7 @@ class RegisterFragment : Fragment() {
                     is ResourceWrapper.Success -> {
                         Log.d("test", it.data.toString())
                         binding.btnRegister.revertAnimation()
+                        Snackbar.make(requireView(),"Registration Successful! Login now",Snackbar.LENGTH_LONG).show()
                     }
 
                     else -> Unit
