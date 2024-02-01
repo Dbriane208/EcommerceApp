@@ -4,9 +4,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import dagger.hilt.android.AndroidEntryPoint
 import daniel.brian.ecommerceapp.R
 import daniel.brian.ecommerceapp.databinding.ActivityShoppingBinding
-
+@AndroidEntryPoint
 class ShoppingActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivityShoppingBinding.inflate(layoutInflater)
