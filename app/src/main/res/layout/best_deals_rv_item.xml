@@ -5,14 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/g_card_background"
-    android:elevation="0dp">
+    android:elevation="0dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="88dp">
 
         <ImageView
-            android:id="@+id/img_best_deal"
+            android:id="@+id/imgBestDeals"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:contentDescription="@string/app_name"
@@ -22,7 +24,7 @@
             android:layout_marginTop="10dp" />
 
         <TextView
-            android:id="@+id/tv_deal_product_name"
+            android:id="@+id/bestDealProductName"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -32,17 +34,17 @@
             android:textColor="@color/black"
             android:textSize="9sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/img_best_deal"
-            app:layout_constraintTop_toTopOf="@id/img_best_deal"
+            app:layout_constraintStart_toEndOf="@id/imgBestDeals"
+            app:layout_constraintTop_toTopOf="@id/imgBestDeals"
             tools:ignore="SmallSp,TextSizeCheck" />
 
         <TextView
-            android:id="@+id/tv_old_price"
+            android:id="@+id/bestDealOldPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/old_price"
-            app:layout_constraintTop_toBottomOf="@id/tv_deal_product_name"
-            app:layout_constraintStart_toEndOf="@id/tv_new_price"
+            app:layout_constraintTop_toBottomOf="@id/bestDealProductName"
+            app:layout_constraintStart_toEndOf="@id/bestDealNewPrice"
             android:textColor="@color/g_gray700"
             android:textSize="12sp"
             android:fontFamily="@font/sf_pro_display"
@@ -50,12 +52,12 @@
             />
 
         <TextView
-            android:id="@+id/tv_new_price"
+            android:id="@+id/bestDealNewPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/price"
-            app:layout_constraintStart_toStartOf="@id/tv_deal_product_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_deal_product_name"
+            app:layout_constraintStart_toStartOf="@id/bestDealProductName"
+            app:layout_constraintTop_toBottomOf="@id/bestDealProductName"
 
             android:textColor="@color/black"
             android:textSize="12sp"
@@ -74,8 +76,8 @@
             android:textSize="11sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_deal_product_name"
-            app:layout_constraintTop_toTopOf="@id/tv_deal_product_name"
+            app:layout_constraintStart_toEndOf="@id/bestDealProductName"
+            app:layout_constraintTop_toTopOf="@id/bestDealProductName"
             tools:ignore="TextSizeCheck,TouchTargetSizeCheck" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

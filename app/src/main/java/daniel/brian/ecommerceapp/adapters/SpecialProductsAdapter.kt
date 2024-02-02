@@ -47,7 +47,7 @@ class SpecialProductsAdapter : RecyclerView.Adapter<SpecialProductsAdapter.Speci
         holder: SpecialProductsAdapter.SpecialProductsViewHolder,
         position: Int
     ) {
-    val product = differ.currentList[position]
+        val product = differ.currentList[position]
         holder.bind(product)
     }
 

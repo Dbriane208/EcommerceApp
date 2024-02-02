@@ -17,11 +17,55 @@ class MainCategoryViewModel @Inject constructor(
     private val _specialProducts = MutableStateFlow<ResourceWrapper<List<Product>>>(ResourceWrapper.Unspecified())
     val specialProduct: StateFlow<ResourceWrapper<List<Product>>> = _specialProducts
 
+    private val _bestDeals = MutableStateFlow<ResourceWrapper<List<Product>>>(ResourceWrapper.Unspecified())
+    val bestDeals: StateFlow<ResourceWrapper<List<Product>>> = _bestDeals
+
+    private val _bestProducts = MutableStateFlow<ResourceWrapper<List<Product>>>(ResourceWrapper.Unspecified())
+    val bestProducts: StateFlow<ResourceWrapper<List<Product>>> = _bestProducts
+
     init {
         fetchSpecialProducts()
+        fetchBestDeals()
+        fetchBestProducts()
     }
 
-    fun fetchSpecialProducts(){
+    private fun fetchBestProducts() {
+        viewModelScope.launch {
+            _bestProducts.emit(ResourceWrapper.Loading())
+        }
+        // Todo - change the value in whereEqualTo
+        firestore.collection("products")
+            .whereEqualTo("category","Chairs").get().addOnSuccessListener {result ->
+                val bestProducts = result.toObjects(Product::class.java)
+                viewModelScope.launch {
+                    _bestProducts.emit(ResourceWrapper.Success(bestProducts))
+                }
+            }.addOnFailureListener {
+                viewModelScope.launch {
+                    _bestProducts.emit(ResourceWrapper.Error(it.message.toString()))
+                }
+            }
+    }
+
+    private fun fetchBestDeals() {
+        viewModelScope.launch {
+            _bestDeals.emit(ResourceWrapper.Loading())
+        }
+
+        firestore.collection("products")
+            .whereEqualTo("category","Chairs").get().addOnSuccessListener {result ->
+                val bestDeals = result.toObjects(Product::class.java)
+                viewModelScope.launch {
+                    _bestDeals.emit(ResourceWrapper.Success(bestDeals))
+                }
+            }.addOnFailureListener {
+                viewModelScope.launch {
+                    _bestDeals.emit(ResourceWrapper.Error(it.message.toString()))
+                }
+            }
+    }
+
+    private fun fetchSpecialProducts(){
         viewModelScope.launch {
             _specialProducts.emit(ResourceWrapper.Loading())
         }
