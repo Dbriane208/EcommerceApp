@@ -15,7 +15,7 @@ class SpecialProductsAdapter : RecyclerView.Adapter<SpecialProductsAdapter.Speci
             binding.apply {
                 Glide.with(itemView).load(product.images[0]).into(imageSpecialRvItem)
                 specialProductName.text = product.name
-                specialProductPrice.text = product.price.toString()
+               ("$" +product.price.toString()).also {  specialProductPrice.text = it }
             }
         }
     }

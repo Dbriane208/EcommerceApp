@@ -41,6 +41,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             TableFragment(),
         )
 
+        // prevents tab sliding
+        binding.viewPagerHome.isUserInputEnabled = false
+
         val viewPager2Adapter =
             HomeViewpagerAdapter(categoriesFragment, childFragmentManager, lifecycle)
         binding.viewPagerHome.adapter = viewPager2Adapter

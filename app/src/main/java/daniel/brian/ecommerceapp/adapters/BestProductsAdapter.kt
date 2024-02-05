@@ -1,5 +1,6 @@
 package daniel.brian.ecommerceapp.adapters
 
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -16,11 +17,12 @@ class BestProductsAdapter: RecyclerView.Adapter<BestProductsAdapter.BestProducts
             binding.apply {
                 Glide.with(itemView).load(product.images[0]).into(bestProductImage)
                 bestProductName.text = product.name
-                bestProductPrice.text = product.price.toString()
+                "$${product.price}".also { bestProductPrice.text = it }
+                bestProductPrice.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
                 if(product.offerPercentage != null){
-                    bestDealNewPrice.text = (product.price -(product.price * product.offerPercentage)).toString()
+                    ("$" +(product.price -(product.price * product.offerPercentage)).toString()).also { bestDealNewPrice.text = it }
                 }else{
-                    bestProductPrice.text = product.price.toString()
+                    ("$" + product.price.toString()).also { bestProductPrice.text = it }
                 }
             }
 
