@@ -26,10 +26,10 @@ class MainCategoryViewModel @Inject constructor(
     private val pagingInfo = PagingInfo()
 
     internal data class PagingInfo(
-        var bestProductsPage: Long = 1,
+        var newItemsPage: Long = 1,
         // used to compare the current list with the old list - if they're equal we want to
         // end the paging
-        var oldBestProducts: List<Product> = emptyList(),
+        var oldItems: List<Product> = emptyList(),
         var isPagingEnd: Boolean = false
     )
 
@@ -48,18 +48,18 @@ class MainCategoryViewModel @Inject constructor(
             // Todo - change the value in whereEqualTo
             firestore.collection("products")
                 // using limit to only load 10 items at a time dynamically
-                .limit(pagingInfo.bestProductsPage * 10).get()
+                .limit(pagingInfo.newItemsPage * 10).get()
                 .addOnSuccessListener { result ->
                     val bestProducts = result.toObjects(Product::class.java)
                     // checking whether the best products are equal to the old products - if it's the case we stop the paging
-                    pagingInfo.isPagingEnd = bestProducts == pagingInfo.oldBestProducts
+                    pagingInfo.isPagingEnd = bestProducts == pagingInfo.oldItems
                     // updating the old products items
-                    pagingInfo.oldBestProducts = bestProducts
+                    pagingInfo.oldItems = bestProducts
                     viewModelScope.launch {
                         _bestProducts.emit(ResourceWrapper.Success(bestProducts))
                     }
                     // incrementing the page triggering to load more
-                    pagingInfo.bestProductsPage++
+                    pagingInfo.newItemsPage++
                 }.addOnFailureListener {
                     viewModelScope.launch {
                         _bestProducts.emit(ResourceWrapper.Error(it.message.toString()))
@@ -69,39 +69,56 @@ class MainCategoryViewModel @Inject constructor(
     }
 
     private fun fetchBestDeals() {
-        viewModelScope.launch {
-            _bestDeals.emit(ResourceWrapper.Loading())
-        }
-
-        firestore.collection("products")
-            .whereEqualTo("category","Chairs").get().addOnSuccessListener {result ->
-                val bestDeals = result.toObjects(Product::class.java)
-                viewModelScope.launch {
-                    _bestDeals.emit(ResourceWrapper.Success(bestDeals))
-                }
-            }.addOnFailureListener {
-                viewModelScope.launch {
-                    _bestDeals.emit(ResourceWrapper.Error(it.message.toString()))
-                }
+        if (!pagingInfo.isPagingEnd) {
+            viewModelScope.launch {
+                _bestDeals.emit(ResourceWrapper.Loading())
             }
+
+            firestore.collection("products")
+                // loading 5 items dynamically
+                .limit(pagingInfo.newItemsPage * 5)
+                .get().addOnSuccessListener { result ->
+                    val bestDeals = result.toObjects(Product::class.java)
+                    // checking whether the best deals products are equal to the old best deals products
+                    pagingInfo.isPagingEnd = bestDeals == pagingInfo.oldItems
+                    // updating the old best products
+                    pagingInfo.oldItems = bestDeals
+                    viewModelScope.launch {
+                        _bestDeals.emit(ResourceWrapper.Success(bestDeals))
+                    }
+                    // incrementing the old best deals products
+                    pagingInfo.newItemsPage++
+                }.addOnFailureListener {
+                    viewModelScope.launch {
+                        _bestDeals.emit(ResourceWrapper.Error(it.message.toString()))
+                    }
+                }
+        }
     }
 
     fun fetchSpecialProducts(){
-        viewModelScope.launch {
-            _specialProducts.emit(ResourceWrapper.Loading())
-        }
-
-        firestore.collection("products")
-            .whereEqualTo("category","Special products").get().addOnSuccessListener {result ->
-                val specialProductsList = result.toObjects(Product::class.java)
-                viewModelScope.launch {
-                    _specialProducts.emit(ResourceWrapper.Success(specialProductsList))
-                }
-            }.addOnFailureListener{
-                viewModelScope.launch {
-                    _specialProducts.emit(ResourceWrapper.Error(it.message.toString()))
-                }
+        if (!pagingInfo.isPagingEnd) {
+            viewModelScope.launch {
+                _specialProducts.emit(ResourceWrapper.Loading())
             }
+
+            firestore.collection("products")
+                .whereEqualTo("category", "Special products")
+                .limit(pagingInfo.newItemsPage * 5)
+                .get().addOnSuccessListener { result ->
+                    val specialProductsList = result.toObjects(Product::class.java)
+                    pagingInfo.isPagingEnd = specialProductsList == pagingInfo.oldItems
+                    pagingInfo.oldItems = specialProductsList
+                    viewModelScope.launch {
+                        _specialProducts.emit(ResourceWrapper.Success(specialProductsList))
+                    }
+                    pagingInfo.newItemsPage++
+                }.addOnFailureListener {
+                    viewModelScope.launch {
+                        _specialProducts.emit(ResourceWrapper.Error(it.message.toString()))
+                    }
+                }
+        }
     }
 
 }

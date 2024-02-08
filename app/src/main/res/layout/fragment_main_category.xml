@@ -37,8 +37,19 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
+            <ProgressBar
+                android:id="@+id/specialProductsProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:indeterminateTint="@color/g_gray700"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/specialProducts"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/txtBestDeals"/>
+
             <TextView
-                android:id="@+id/txtBestProducts"
+                android:id="@+id/txtBestDeals"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/deals"
@@ -58,11 +69,22 @@
                 android:layout_marginTop="10dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txtBestProducts"
+                app:layout_constraintTop_toBottomOf="@id/txtBestDeals"
                 />
 
+            <ProgressBar
+                android:id="@+id/bestDealsProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:indeterminateTint="@color/g_gray700"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtBestDeals"
+                app:layout_constraintBottom_toTopOf="@id/txtBestProducts"/>
+
             <TextView
-                android:id="@+id/txtProducts"
+                android:id="@+id/txtBestProducts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/products"
@@ -84,7 +106,7 @@
                 android:layout_marginEnd="15dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txtProducts"
+                app:layout_constraintTop_toBottomOf="@id/txtBestProducts"
                 />
 
             <ProgressBar

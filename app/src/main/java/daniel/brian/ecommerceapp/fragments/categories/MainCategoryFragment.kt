@@ -52,13 +52,16 @@ class MainCategoryFragment : Fragment(){
               when(it){
                   is ResourceWrapper.Loading ->{
                       showLoading()
+                      binding.specialProductsProgressBar.visibility = View.VISIBLE
                   }
                   is ResourceWrapper.Success ->{
                       specialProductsAdapter.differ.submitList(it.data)
                       hideLoading()
+                      binding.specialProductsProgressBar.visibility = View.GONE
                   }
                   is ResourceWrapper.Error ->{
                       hideLoading()
+                      binding.specialProductsProgressBar.visibility = View.GONE
                       Log.e(TAG,it.message.toString())
                       Toast.makeText(requireContext(),it.message,Toast.LENGTH_SHORT).show()
                   }
@@ -72,13 +75,16 @@ class MainCategoryFragment : Fragment(){
                 when(it){
                     is ResourceWrapper.Loading ->{
                         showLoading()
+                        binding.bestDealsProgressBar.visibility = View.VISIBLE
                     }
                     is ResourceWrapper.Success ->{
                         bestDealsAdapter.differ.submitList(it.data)
                         hideLoading()
+                        binding.bestDealsProgressBar.visibility = View.GONE
                     }
                     is ResourceWrapper.Error ->{
                         hideLoading()
+                        binding.bestDealsProgressBar.visibility = View.GONE
                         Log.e(TAG,it.message.toString())
                         Toast.makeText(requireContext(),it.message,Toast.LENGTH_SHORT).show()
                     }
@@ -91,14 +97,17 @@ class MainCategoryFragment : Fragment(){
             viewModel.bestProducts.collectLatest {
                 when(it){
                     is ResourceWrapper.Loading -> {
+                        showLoading()
                         binding.bestProductsProgressBar.visibility = View.VISIBLE
                     }
                     is ResourceWrapper.Success -> {
                         bestProductsAdapter.differ.submitList(it.data)
+                        hideLoading()
                         binding.bestProductsProgressBar.visibility = View.GONE
                     }
                     is ResourceWrapper.Error ->{
                         binding.bestProductsProgressBar.visibility = View.GONE
+                        hideLoading()
                         Log.e(TAG,it.message.toString())
                         Toast.makeText(requireContext(),it.message,Toast.LENGTH_SHORT).show()
                     }
