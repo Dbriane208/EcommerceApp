@@ -32,8 +32,13 @@
     <string name="products">Best Products</string>
     <string name="price">$1600</string>
     <string name="scotch_premium">Scotch Premium</string>
-    <string name="add_to_cart">Add to cart</string>
+    <string name="add_to_cart">Add to Cart</string>
     <string name="old_price">$2000</string>
     <string name="see_product">See product</string>
     <string name="chair">Chair</string>
+    <string name="black_jeans">Black Jeans</string>
+    <string name="_600">$6000</string>
+    <string name="txtDesc">Black leather jeans.</string>
+    <string name="color">Color</string>
+    <string name="size">Size</string>
 </resources>
