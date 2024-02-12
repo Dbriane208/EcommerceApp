@@ -41,4 +41,5 @@
     <string name="txtDesc">Black leather jeans.</string>
     <string name="color">Color</string>
     <string name="size">Size</string>
+    <string name="s">S</string>
 </resources>
