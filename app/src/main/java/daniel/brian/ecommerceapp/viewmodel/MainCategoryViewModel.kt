@@ -46,7 +46,7 @@ class MainCategoryViewModel @Inject constructor(
                 _bestProducts.emit(ResourceWrapper.Loading())
             }
             // Todo - change the value in whereEqualTo
-            firestore.collection("products")
+            firestore.collection("products").whereEqualTo("category","Best Products")
                 // using limit to only load 10 items at a time dynamically
                 .limit(pagingInfo.newItemsPage * 10).get()
                 .addOnSuccessListener { result ->
@@ -74,7 +74,7 @@ class MainCategoryViewModel @Inject constructor(
                 _bestDeals.emit(ResourceWrapper.Loading())
             }
 
-            firestore.collection("products")
+            firestore.collection("products").whereEqualTo("category","Best Deals")
                 // loading 5 items dynamically
                 .limit(pagingInfo.newItemsPage * 5)
                 .get().addOnSuccessListener { result ->

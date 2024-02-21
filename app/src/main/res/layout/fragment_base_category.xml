@@ -12,6 +12,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <ProgressBar
+            android:id="@+id/offerProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:indeterminateTint="@color/g_gray700"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/txtBestProducts"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvOffer"
             android:layout_width="match_parent"
@@ -36,8 +47,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rvOffer"/>
 
+        <ProgressBar
+            android:id="@+id/bestPProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:indeterminateTint="@color/g_gray700"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtBestProducts"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/bestProducts"
+            android:id="@+id/bestProductsRV"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
