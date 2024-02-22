@@ -56,6 +56,7 @@ class SizeAdapter : RecyclerView.Adapter<SizeAdapter.SizeViewHolder>() {
             notifyItemChanged(selectedPosition)
             onItemSizeClick?.invoke(size)
         }
+
     }
 
     override fun getItemCount(): Int {

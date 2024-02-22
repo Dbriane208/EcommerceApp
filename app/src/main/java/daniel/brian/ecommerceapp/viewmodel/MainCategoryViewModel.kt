@@ -23,9 +23,9 @@ class MainCategoryViewModel @Inject constructor(
     private val _bestProducts = MutableStateFlow<ResourceWrapper<List<Product>>>(ResourceWrapper.Unspecified())
     val bestProducts: StateFlow<ResourceWrapper<List<Product>>> = _bestProducts
 
-    private val pagingInfo = PagingInfo()
+    val pagingInfo = PagingInfo()
 
-    internal data class PagingInfo(
+     data class PagingInfo(
         var newItemsPage: Long = 1,
         // used to compare the current list with the old list - if they're equal we want to
         // end the paging
@@ -45,8 +45,8 @@ class MainCategoryViewModel @Inject constructor(
             viewModelScope.launch {
                 _bestProducts.emit(ResourceWrapper.Loading())
             }
-            // Todo - change the value in whereEqualTo
-            firestore.collection("products").whereEqualTo("category","Best Products")
+
+            firestore.collection("products").whereEqualTo("category","Best products")
                 // using limit to only load 10 items at a time dynamically
                 .limit(pagingInfo.newItemsPage * 10).get()
                 .addOnSuccessListener { result ->
@@ -120,5 +120,4 @@ class MainCategoryViewModel @Inject constructor(
                 }
         }
     }
-
 }

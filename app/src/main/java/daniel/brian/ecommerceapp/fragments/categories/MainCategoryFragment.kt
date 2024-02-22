@@ -12,14 +12,17 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import daniel.brian.ecommerceapp.R
 import daniel.brian.ecommerceapp.adapters.BestDealsAdapter
 import daniel.brian.ecommerceapp.adapters.BestProductsAdapter
 import daniel.brian.ecommerceapp.adapters.SpecialProductsAdapter
 import daniel.brian.ecommerceapp.databinding.FragmentMainCategoryBinding
 import daniel.brian.ecommerceapp.util.ResourceWrapper
+import daniel.brian.ecommerceapp.util.showBottomNavigationView
 import daniel.brian.ecommerceapp.viewmodel.MainCategoryViewModel
 import kotlinx.coroutines.flow.collectLatest
 
@@ -46,6 +49,23 @@ class MainCategoryFragment : Fragment(){
         setUpSpecialProductsRV()
         setUpBestDealsRV()
         setUpBestProductsRV()
+
+        // invoking the onclick listener of the adapters
+        specialProductsAdapter.onClick = {
+            // passing the product we want to sent to the product details adapter
+            val b = Bundle().apply { putParcelable("products",it) }
+            findNavController().navigate(R.id.action_homeFragment_to_productDetailsFragment,b)
+        }
+
+        bestDealsAdapter.onClick = {
+            val b = Bundle().apply { putParcelable("products",it) }
+            findNavController().navigate(R.id.action_homeFragment_to_productDetailsFragment,b)
+        }
+
+        bestProductsAdapter.onClick = {
+            val b = Bundle().apply { putParcelable("products",it) }
+            findNavController().navigate(R.id.action_homeFragment_to_productDetailsFragment,b)
+        }
 
         lifecycleScope.launchWhenStarted {
           viewModel.specialProduct.collectLatest {
@@ -157,5 +177,11 @@ class MainCategoryFragment : Fragment(){
             layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
             adapter = specialProductsAdapter
         }
+    }
+
+    // showing the bottom navigation bar in the main category
+    override fun onResume() {
+        super.onResume()
+        showBottomNavigationView()
     }
 }
