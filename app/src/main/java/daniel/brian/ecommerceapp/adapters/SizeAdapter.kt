@@ -8,9 +8,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import daniel.brian.ecommerceapp.databinding.SizeRvItemBinding
 
-private var selectedPosition = -1
-var onItemSizeClick: ((String) -> Unit) ?= null
+
 class SizeAdapter : RecyclerView.Adapter<SizeAdapter.SizeViewHolder>() {
+    private var selectedPosition = -1
+    var onItemSizeClick: ((String) -> Unit) ?= null
+
     inner class SizeViewHolder(private val binding: SizeRvItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(size: String,position: Int){
             binding.tvSize.text = size

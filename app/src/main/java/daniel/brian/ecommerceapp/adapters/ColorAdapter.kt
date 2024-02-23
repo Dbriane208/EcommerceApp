@@ -9,10 +9,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import daniel.brian.ecommerceapp.databinding.ColorRvItemBinding
 
-private var selectedPosition = -1
-var onItemColorClick: ((Int) -> Unit) ?= null
 class ColorAdapter : RecyclerView.Adapter<ColorAdapter.ColorViewHolder>() {
-
+    private var selectedPosition = -1
+    var onItemColorClick: ((Int) -> Unit) ?= null
     inner class ColorViewHolder(private val binding: ColorRvItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(color: Int,position: Int){
             val imageDrawable = ColorDrawable(color)

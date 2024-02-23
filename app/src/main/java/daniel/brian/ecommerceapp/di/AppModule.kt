@@ -4,12 +4,14 @@ import android.app.Application
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import daniel.brian.ecommerceapp.firebase.FirebaseCommon
 import daniel.brian.ecommerceapp.util.Constants.INTRODUCTION_SP
 import javax.inject.Singleton
 
@@ -31,5 +33,12 @@ object AppModule {
         application: Application
         // passing the Mode as private since only our app will be able to use this preference
     ): SharedPreferences = application.getSharedPreferences(INTRODUCTION_SP,MODE_PRIVATE)
+
+    @Provides
+    @Singleton
+    fun provideFirebaseCommon(
+        firebaseAuth: FirebaseAuth,
+        firestore: FirebaseFirestore
+    ) = FirebaseCommon(firebaseAuth,firestore)
 
 }
