@@ -7,4 +7,5 @@
     <dimen name="btnWidth">130dp</dimen>
     <dimen name="regBtnWidth">200dp</dimen>
     <dimen name="regBtnHt">55dp</dimen>
+    <dimen name="mediumButtonHeight">45dp</dimen>
 </resources>

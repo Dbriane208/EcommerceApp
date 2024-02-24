@@ -42,4 +42,13 @@
     <string name="color">Color</string>
     <string name="size">Size</string>
     <string name="s">S</string>
+    <string name="my_cart">My Cart</string>
+    <string name="total">Total</string>
+    <string name="_150">$150</string>
+    <string name="check_out">Check out</string>
+    <string name="empty">Your shopping cart is empty</string>
+    <string name="_chair">Chair</string>
+    <string name="_50">$50</string>
+    <string name="_1">1</string>
+    <string name="l">L</string>
 </resources>
