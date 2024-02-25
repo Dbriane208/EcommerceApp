@@ -39,6 +39,7 @@ class FirebaseCommon(
              val productObject = document.toObject(CartProduct::class.java)
              // checking whether the projectObject is null
              productObject?.let { cartProduct ->
+                 // increasing the count of the productObject
                  val newQuantity = cartProduct.quantity + 1
                  // copying the cart product object and changing only one data object
                  val newProductObject = cartProduct.copy(quantity = newQuantity)
@@ -51,5 +52,34 @@ class FirebaseCommon(
          }.addOnFailureListener {
                  onResult(null,it)
              }
+    }
+
+    fun decreaseQuantity(documentId: String,onResult: (String?, Exception?) -> Unit){
+        firestore.runTransaction {transaction ->
+            // getting the path of our product document
+            val documentRef = cartCollection.document(documentId)
+            // getting our cart product document
+            val document = transaction.get(documentRef)
+            // getting the object that we want to change in the above document
+            val productObject = document.toObject(CartProduct::class.java)
+            // checking whether the projectObject is null
+            productObject?.let { cartProduct ->
+                // decreasing the count of the product object
+                val newQuantity = cartProduct.quantity - 1
+                // copying the cart product object and changing only one data object : quantity
+                val newProductObject = cartProduct.copy(quantity = newQuantity)
+                // passing the document we want to update
+                transaction.set(documentRef,newProductObject)
+            }
+        }.addOnSuccessListener {
+            onResult(documentId,null)
+        }.addOnFailureListener {
+            onResult(null,it)
+        }
+    }
+
+    // creating a helper class
+    enum class QuantityChanging{
+        INCREASE,DECREASE
     }
 }
