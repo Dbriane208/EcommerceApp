@@ -8,9 +8,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import daniel.brian.ecommerceapp.data.CartProduct
 import daniel.brian.ecommerceapp.firebase.FirebaseCommon
+import daniel.brian.ecommerceapp.helper.getProductPrice
 import daniel.brian.ecommerceapp.util.ResourceWrapper
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,8 +28,29 @@ class CartViewModel @Inject constructor(
     private val _cartProducts = MutableStateFlow<ResourceWrapper<List<CartProduct>>>(ResourceWrapper.Unspecified())
     val cartProducts = _cartProducts.asStateFlow()
 
+    // creating a state to delete item from cart if quantity == 0
+    private val _deleteDialog = MutableSharedFlow<CartProduct>()
+    val deleteDialog = _deleteDialog.asSharedFlow()
+
     // creating a list so that we can get the index of document we want
     private var cartProductDocuments = emptyList<DocumentSnapshot>()
+
+    // using the cartProducts flow because our product prices depends on that flow
+    val productsPrice = cartProducts.map {
+        when(it){
+            is ResourceWrapper.Success -> {
+                calculatePrice(it.data!!)
+            }
+            else -> null
+        }
+    }
+
+    private fun calculatePrice(data: List<CartProduct>): Float {
+        // it will return a double which we will then convert into a float
+        return  data.sumOf { cartProduct ->
+            (cartProduct.product.offerPercentage.getProductPrice(cartProduct.product.price) * cartProduct.quantity).toDouble()
+        }.toFloat()
+    }
 
     init {
         getCartProducts()
@@ -64,9 +89,16 @@ class CartViewModel @Inject constructor(
             val documentId = cartProductDocuments[index].id
             when(quantityChanging){
                 FirebaseCommon.QuantityChanging.INCREASE ->{
+                    // to implement the loading of the progress bar
+                    viewModelScope.launch { _cartProducts.emit(ResourceWrapper.Loading()) }
                     increaseQuantity(documentId)
                 }
                 FirebaseCommon.QuantityChanging.DECREASE ->{
+                    if (cartProduct.quantity == 1){
+                        viewModelScope.launch { _deleteDialog.emit(cartProduct) }
+                        return
+                    }
+                    viewModelScope.launch { _cartProducts.emit(ResourceWrapper.Loading()) }
                     decreaseQuantity(documentId)
                 }
             }
@@ -86,6 +118,15 @@ class CartViewModel @Inject constructor(
             if (exception != null){
                 viewModelScope.launch { _cartProducts.emit(ResourceWrapper.Error(exception.message.toString())) }
             }
+        }
+    }
+
+    fun deleteCartProducts(cartProduct: CartProduct) {
+       val index = cartProducts.value.data?.indexOf(cartProduct)
+        if (index != null && index != -1){
+            val documentId = cartProductDocuments[index].id
+            firestore.collection("user").document(auth.uid!!).collection("cart")
+                .document(documentId).delete()
         }
     }
 }
