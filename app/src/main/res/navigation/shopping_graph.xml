@@ -31,12 +31,25 @@
         <action
             android:id="@+id/action_cartFragment_to_productDetailsFragment"
             app:destination="@id/productDetailsFragment" />
+        <action
+            android:id="@+id/action_cartFragment_to_billingFragment"
+            app:destination="@id/billingFragment" />
+        <action
+            android:id="@+id/action_cartFragment_to_billingFragment2"
+            app:destination="@id/billingFragment" />
+        <action
+            android:id="@+id/action_cartFragment_to_billingFragment3"
+            app:destination="@id/billingFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="daniel.brian.ecommerceapp.fragments.shopping.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_addressFragment"
+            app:destination="@id/addressFragment" />
+    </fragment>
     <fragment
         android:id="@+id/productDetailsFragment"
         android:name="daniel.brian.ecommerceapp.fragments.categories.ProductDetailsFragment"
@@ -45,5 +58,25 @@
         <argument
             android:name="products"
             app:argType="daniel.brian.ecommerceapp.data.Product" />
+    </fragment>
+    <fragment
+        android:id="@+id/addressFragment"
+        android:name="daniel.brian.ecommerceapp.fragments.categories.AddressFragment"
+        android:label="fargment_address"
+        tools:layout="@layout/fargment_address" />
+    <fragment
+        android:id="@+id/billingFragment"
+        android:name="daniel.brian.ecommerceapp.fragments.categories.BillingFragment"
+        android:label="fragment_billing"
+        tools:layout="@layout/fragment_billing" >
+        <action
+            android:id="@+id/action_billingFragment_to_addressFragment"
+            app:destination="@id/addressFragment" />
+        <argument
+            android:name="totalPrice"
+            app:argType="float" />
+        <argument
+            android:name="products"
+            app:argType="daniel.brian.ecommerceapp.data.CartProduct[]" />
     </fragment>
 </navigation>
