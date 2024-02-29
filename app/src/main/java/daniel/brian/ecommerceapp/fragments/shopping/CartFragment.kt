@@ -77,6 +77,10 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
             findNavController().navigate(action)
         }
 
+        binding.imageCloseCart.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
         lifecycleScope.launchWhenStarted {
             viewModel.cartProducts.collectLatest {
                 when(it){
