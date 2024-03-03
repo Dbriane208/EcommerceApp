@@ -22,6 +22,7 @@ import kotlinx.coroutines.tasks.await
 import java.io.ByteArrayOutputStream
 import java.util.UUID
 import javax.inject.Inject
+@Suppress("DEPRECATION")
 @HiltViewModel
 class UserAccountViewModel @Inject constructor(
     private val firestore: FirebaseFirestore,
@@ -112,7 +113,7 @@ class UserAccountViewModel @Inject constructor(
                 saveUserInformation(user.copy(imagePath = imageUrl),false)
             }catch (e: Exception){
                 viewModelScope.launch{
-                    _updateInfo.emit(ResourceWrapper.Error(e.message.toString()))
+                    _user.emit(ResourceWrapper.Error(e.message.toString()))
                 }
             }
         }
