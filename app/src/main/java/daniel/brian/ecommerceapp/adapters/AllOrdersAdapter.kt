@@ -73,7 +73,10 @@ class AllOrdersAdapter: Adapter<AllOrdersAdapter.AllOrdersViewHolder>() {
     override fun onBindViewHolder(holder: AllOrdersAdapter.AllOrdersViewHolder, position: Int) {
         val allOrders = differ.currentList[position]
         holder.bind(allOrders)
-        onAllOrdersClick?.invoke(allOrders)
+        holder.itemView.setOnClickListener {
+            onAllOrdersClick?.invoke(allOrders)
+        }
+
     }
 
     override fun getItemCount(): Int {

@@ -76,4 +76,8 @@
     <string name="_save">Save</string>
     <string name="no_orders_to_show">No orders to show</string>
     <string name="all_orders">All orders</string>
+    <string name="_1234567">#1234567</string>
+    <string name="address">Address</string>
+    <string name="_products">Products</string>
+    <string name="total_">Total</string>
 </resources>

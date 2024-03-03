@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -57,6 +58,11 @@ class AllOrdersFragment: Fragment() {
                 }
             }
         }
+        allOrdersAdapter.onAllOrdersClick = {
+            val action = AllOrdersFragmentDirections.actionAllOrdersFragment2ToOrderDetailsFragment(it)
+            findNavController().navigate(action)
+        }
+
     }
 
     private fun setupAllOrdersRV() {

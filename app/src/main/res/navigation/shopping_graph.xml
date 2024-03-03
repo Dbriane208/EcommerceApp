@@ -88,5 +88,18 @@
         android:id="@+id/allOrdersFragment2"
         android:name="daniel.brian.ecommerceapp.fragments.settings.AllOrdersFragment"
         android:label="fragment_all_orders"
-        tools:layout="@layout/fragment_all_orders" />
+        tools:layout="@layout/fragment_all_orders" >
+        <action
+            android:id="@+id/action_allOrdersFragment2_to_orderDetailsFragment"
+            app:destination="@id/orderDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderDetailsFragment"
+        android:name="daniel.brian.ecommerceapp.fragments.settings.OrderDetailsFragment"
+        android:label="fragment_order_detail"
+        tools:layout="@layout/fragment_order_detail" >
+        <argument
+            android:name="order"
+            app:argType="daniel.brian.ecommerceapp.data.Order" />
+    </fragment>
 </navigation>
