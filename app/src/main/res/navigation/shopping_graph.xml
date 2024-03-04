@@ -69,7 +69,13 @@
         android:id="@+id/addressFragment"
         android:name="daniel.brian.ecommerceapp.fragments.categories.AddressFragment"
         android:label="fargment_address"
-        tools:layout="@layout/fargment_address" />
+        tools:layout="@layout/fargment_address" >
+        <argument
+            android:name="address"
+            app:argType="daniel.brian.ecommerceapp.data.Address"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
     <fragment
         android:id="@+id/billingFragment"
         android:name="daniel.brian.ecommerceapp.fragments.categories.BillingFragment"
@@ -84,6 +90,9 @@
         <argument
             android:name="products"
             app:argType="daniel.brian.ecommerceapp.data.CartProduct[]" />
+        <argument
+            android:name="payments"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/userAccountFragment"

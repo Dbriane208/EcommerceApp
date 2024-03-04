@@ -25,23 +25,27 @@ import kotlinx.coroutines.flow.collectLatest
 class CartFragment : Fragment(R.layout.fragment_cart) {
     private lateinit var binding: FragmentCartBinding
     private val cartAdapter by lazy { CartAdapter() }
+
     /*
-    * the reason we're using activityModels is because we don't want to trigger the getProducts function twice by
-    * creating a new cartViewModel object. We want to use the CartViewModel we declared in the shopping activity
-    */
+     * the reason we're using activityModels is because we don't want to trigger the getProducts function twice by
+     * creating a new cartViewModel object. We want to use the CartViewModel we declared in the shopping activity
+     */
     private val viewModel by activityViewModels<CartViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-        ): View {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentCartBinding.inflate(layoutInflater)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         setUpCartRV()
@@ -49,7 +53,7 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         // collecting the price from the flow to update our textview price
         var totalPrice = 0f
         lifecycleScope.launchWhenStarted {
-            viewModel.productsPrice.collectLatest {price ->
+            viewModel.productsPrice.collectLatest { price ->
                 price?.let {
                     totalPrice = it
                     "$ $price".also { binding.tvTotalPrice.text = it }
@@ -59,21 +63,26 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
         // navigating to the details fragment from the cart fragment once the product is clicked
         cartAdapter.onProductClick = {
-            val b = Bundle().apply { putParcelable("products",it.product) }
-            findNavController().navigate(R.id.action_cartFragment_to_productDetailsFragment,b)
+            val b = Bundle().apply { putParcelable("products", it.product) }
+            findNavController().navigate(R.id.action_cartFragment_to_productDetailsFragment, b)
         }
 
         // implementing the add and remove form cart product item
         cartAdapter.onPlusClick = {
-            viewModel.changeQuantity(it,FirebaseCommon.QuantityChanging.INCREASE)
+            viewModel.changeQuantity(it, FirebaseCommon.QuantityChanging.INCREASE)
         }
 
         cartAdapter.onMinusClick = {
-            viewModel.changeQuantity(it,FirebaseCommon.QuantityChanging.DECREASE)
+            viewModel.changeQuantity(it, FirebaseCommon.QuantityChanging.DECREASE)
         }
 
         binding.buttonCheckout.setOnClickListener {
-           val action = CartFragmentDirections.actionCartFragmentToBillingFragment2(totalPrice,cartAdapter.differ.currentList.toTypedArray())
+            val action =
+                CartFragmentDirections.actionCartFragmentToBillingFragment2(
+                    totalPrice,
+                    cartAdapter.differ.currentList.toTypedArray(),
+                    true,
+                )
             findNavController().navigate(action)
         }
 
@@ -83,27 +92,28 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
         lifecycleScope.launchWhenStarted {
             viewModel.cartProducts.collectLatest {
-                when(it){
+                when (it) {
                     is ResourceWrapper.Loading -> {
                         binding.progressbarCart.visibility = View.VISIBLE
                     }
                     is ResourceWrapper.Success -> {
                         binding.progressbarCart.visibility = View.INVISIBLE
-                        if (it.data!!.isEmpty()){
-                            showEmptyCart()
-                            // hiding other views when we have empty data
-                            hideOtherViews()
-                        }else{
+                        if (it.data!!.isEmpty())
+                            {
+                                showEmptyCart()
+                                // hiding other views when we have empty data
+                                hideOtherViews()
+                            } else {
                             hideEmptyCart()
                             // showing the views when we have some data
                             showOtherViews()
                             cartAdapter.differ.submitList(it.data)
                         }
                     }
-                    is ResourceWrapper.Error ->{
+                    is ResourceWrapper.Error -> {
                         binding.progressbarCart.visibility = View.INVISIBLE
                         // Change this to ensure that when the phone is rotated
-                        Toast.makeText(requireContext(),it.message,Toast.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
                     }
                     else -> Unit
                 }
@@ -112,17 +122,18 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         // collecting the dialog state
         lifecycleScope.launchWhenStarted {
             viewModel.deleteDialog.collectLatest {
-                val alertDialog = AlertDialog.Builder(requireContext()).apply {
-                    setTitle("Delete item from cart")
-                    setMessage("Do you want to delete this item from your cart?")
-                    setNegativeButton("Cancel"){dialog,_ ->
-                        dialog.dismiss()
+                val alertDialog =
+                    AlertDialog.Builder(requireContext()).apply {
+                        setTitle("Delete item from cart")
+                        setMessage("Do you want to delete this item from your cart?")
+                        setNegativeButton("Cancel") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        setPositiveButton("Yes") { dialog, _ ->
+                            viewModel.deleteCartProducts(it)
+                            dialog.dismiss()
+                        }
                     }
-                    setPositiveButton("Yes"){dialog,_ ->
-                        viewModel.deleteCartProducts(it)
-                        dialog.dismiss()
-                    }
-                }
                 alertDialog.create()
                 alertDialog.show()
             }
@@ -159,11 +170,10 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
     private fun setUpCartRV() {
         binding.rvCart.apply {
-            layoutManager = LinearLayoutManager(requireContext(),RecyclerView.VERTICAL,false)
+            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
             adapter = cartAdapter
             // to add some space in the cart product recyclerview
             addItemDecoration(VerticalItemDecoration())
         }
     }
-
 }

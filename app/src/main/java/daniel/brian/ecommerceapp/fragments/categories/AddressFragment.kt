@@ -1,13 +1,14 @@
 package daniel.brian.ecommerceapp.fragments.categories
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import daniel.brian.ecommerceapp.data.Address
@@ -22,21 +23,24 @@ class AddressFragment : Fragment() {
     private lateinit var binding: FargmentAddressBinding
     val viewModel by viewModels<AddressViewModel>()
 
+    // getting the args object
+    val args by navArgs<AddressFragmentArgs>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //we observe and collect our state
+        // we observe and collect our state
         lifecycleScope.launchWhenStarted {
             viewModel.addNewAddress.collectLatest {
-                when(it){
-                    is ResourceWrapper.Loading ->{
+                when (it) {
+                    is ResourceWrapper.Loading -> {
                         binding.progressbarAddress.visibility = View.VISIBLE
                     }
-                    is ResourceWrapper.Success ->{
+                    is ResourceWrapper.Success -> {
                         binding.progressbarAddress.visibility = View.INVISIBLE
                         findNavController().navigateUp()
                     }
-                    is ResourceWrapper.Error ->{
-                        Snackbar.make(requireView(),it.message.toString(),Snackbar.LENGTH_LONG).show()
+                    is ResourceWrapper.Error -> {
+                        Snackbar.make(requireView(), it.message.toString(), Snackbar.LENGTH_LONG).show()
                     }
                     else -> Unit
                 }
@@ -45,22 +49,42 @@ class AddressFragment : Fragment() {
 
         lifecycleScope.launchWhenStarted {
             viewModel.error.collectLatest {
-                Snackbar.make(requireView(),it,Snackbar.LENGTH_LONG).show()
+                Snackbar.make(requireView(), it, Snackbar.LENGTH_LONG).show()
             }
         }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         // Inflate the layout for this fragment
         binding = FargmentAddressBinding.inflate(layoutInflater)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
+
+        // getting the address tags
+        val address = args.address
+        if (address == null) {
+            binding.buttonDelete.visibility = View.GONE
+        } else {
+            // changing to the details we get from address if not null
+            binding.apply {
+                edAddressTitle.setText(address.addressTitle)
+                edFullName.setText(address.fullName)
+                edState.setText(address.state)
+                edPhone.setText(address.phone)
+                edCity.setText(address.city)
+                edState.setText(address.state)
+            }
+        }
 
         binding.apply {
             buttonSave.setOnClickListener {
@@ -76,5 +100,4 @@ class AddressFragment : Fragment() {
             }
         }
     }
-
 }

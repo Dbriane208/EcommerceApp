@@ -30,18 +30,19 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Suppress("DEPRECATION")
 @AndroidEntryPoint
-class BillingFragment: Fragment() {
+class BillingFragment : Fragment() {
     private lateinit var binding: FragmentBillingBinding
     private val addressAdapter by lazy { AddressAdapter() }
     private val billingProductsAdapter by lazy { BillingProductsAdapter() }
     private val billingViewModel by viewModels<BillingViewModel>()
+
     // we want to receive the price and products from the cartFragment
     private val args by navArgs<BillingFragmentArgs>()
     private var products = emptyList<CartProduct>()
     private var totalPrice = 0f
 
-    private var selectedAddress: Address ?= null
-    private  val orderViewModel by viewModels<OrderViewModel>()
+    private var selectedAddress: Address? = null
+    private val orderViewModel by viewModels<OrderViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,15 +54,27 @@ class BillingFragment: Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentBillingBinding.inflate(inflater)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
+        // getting the payment boolean
+        if (!args.payments) {
+            binding.apply {
+                buttonPlaceOrder.visibility = View.INVISIBLE
+                totalBoxContainer.visibility = View.INVISIBLE
+                middleLine.visibility = View.INVISIBLE
+                bottomLine.visibility = View.INVISIBLE
+            }
+        }
         // setting up the recyclerView
         setupBillingProductsRV()
         setupAddressRV()
@@ -74,17 +87,17 @@ class BillingFragment: Fragment() {
         // observing and collecting our state
         lifecycleScope.launchWhenStarted {
             billingViewModel.address.collectLatest {
-                when(it){
-                    is ResourceWrapper.Loading ->{
+                when (it) {
+                    is ResourceWrapper.Loading -> {
                         binding.progressbarAddress.visibility = View.VISIBLE
                     }
-                    is ResourceWrapper.Success ->{
+                    is ResourceWrapper.Success -> {
                         addressAdapter.differ.submitList(it.data)
                         binding.progressbarAddress.visibility = View.GONE
                     }
-                    is ResourceWrapper.Error ->{
+                    is ResourceWrapper.Error -> {
                         binding.progressbarAddress.visibility = View.GONE
-                        Snackbar.make(requireView(),"Error ${it.message}",Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(requireView(), "Error ${it.message}", Snackbar.LENGTH_SHORT).show()
                     }
                     else -> Unit
                 }
@@ -94,18 +107,18 @@ class BillingFragment: Fragment() {
         // we collect our state
         lifecycleScope.launchWhenStarted {
             orderViewModel.order.collectLatest {
-                when(it){
-                    is ResourceWrapper.Loading ->{
+                when (it) {
+                    is ResourceWrapper.Loading -> {
                         binding.buttonPlaceOrder.startAnimation()
                     }
-                    is ResourceWrapper.Success ->{
+                    is ResourceWrapper.Success -> {
                         binding.buttonPlaceOrder.revertAnimation()
                         findNavController().navigateUp()
-                        Snackbar.make(requireView(),"Your order was placed",Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(requireView(), "Your order was placed", Snackbar.LENGTH_SHORT).show()
                     }
-                    is ResourceWrapper.Error ->{
+                    is ResourceWrapper.Error -> {
                         binding.progressbarAddress.visibility = View.GONE
-                        Snackbar.make(requireView(),"Error ${it.message}",Snackbar.LENGTH_LONG).show()
+                        Snackbar.make(requireView(), "Error ${it.message}", Snackbar.LENGTH_LONG).show()
                     }
                     else -> Unit
                 }
@@ -118,12 +131,18 @@ class BillingFragment: Fragment() {
         // we add adapter onClick
         addressAdapter.onclick = {
             selectedAddress = it
+            // navigating to the addressFragment
+            // we only need to do this if args is not payment
+            if (!args.payments) {
+                val b = Bundle().apply { putParcelable("address", selectedAddress) }
+                findNavController().navigate(R.id.action_billingFragment_to_addressFragment, b)
+            }
         }
 
         // Adding click functionality to ur button place holder
         binding.buttonPlaceOrder.setOnClickListener {
-            if (selectedAddress == null){
-                Snackbar.make(requireView(),"Please select an Address",Snackbar.LENGTH_LONG).show()
+            if (selectedAddress == null) {
+                Snackbar.make(requireView(), "Please select an Address", Snackbar.LENGTH_LONG).show()
                 return@setOnClickListener
             }
             showOrderConfirmationDialog()
@@ -131,38 +150,40 @@ class BillingFragment: Fragment() {
     }
 
     private fun showOrderConfirmationDialog() {
-        val alertDialog = AlertDialog.Builder(requireContext()).apply {
-            setTitle("Order Items")
-            setMessage("Do you want to order your cart items?")
-            setNegativeButton("Cancel") { dialog,_ ->
-                dialog.dismiss()
+        val alertDialog =
+            AlertDialog.Builder(requireContext()).apply {
+                setTitle("Order Items")
+                setMessage("Do you want to order your cart items?")
+                setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                setPositiveButton("Yes") { dialog, _ ->
+                    val order =
+                        Order(
+                            OrderStatus.Ordered.status,
+                            totalPrice,
+                            products,
+                            selectedAddress!!,
+                        )
+                    orderViewModel.placeOrder(order)
+                    dialog.dismiss()
+                }
             }
-            setPositiveButton("Yes"){ dialog,_ ->
-                val order = Order(
-                    OrderStatus.Ordered.status,
-                    totalPrice,
-                    products,
-                    selectedAddress!!
-                )
-                orderViewModel.placeOrder(order)
-                dialog.dismiss()
-            }
-        }
         alertDialog.create()
         alertDialog.show()
     }
 
     private fun setupAddressRV() {
-       binding.rvAddress.apply {
-           layoutManager = LinearLayoutManager(requireContext(),RecyclerView.HORIZONTAL,false)
-           adapter = addressAdapter
-           addItemDecoration(HorizontalItemDecoration())
-       }
+        binding.rvAddress.apply {
+            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+            adapter = addressAdapter
+            addItemDecoration(HorizontalItemDecoration())
+        }
     }
 
     private fun setupBillingProductsRV() {
         binding.rvProducts.apply {
-            layoutManager = LinearLayoutManager(requireContext(),RecyclerView.HORIZONTAL,false)
+            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
             adapter = billingProductsAdapter
             addItemDecoration(HorizontalItemDecoration())
         }

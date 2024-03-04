@@ -60,7 +60,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         // navigating to billing
         binding.linearBilling.setOnClickListener {
-            val action = ProfileFragmentDirections.actionProfileFragmentToBillingFragment(0f, emptyArray())
+            val action = ProfileFragmentDirections.actionProfileFragmentToBillingFragment(0f, emptyArray(), false)
             findNavController().navigate(action)
         }
 
