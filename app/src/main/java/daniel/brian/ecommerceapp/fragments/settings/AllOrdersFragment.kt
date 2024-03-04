@@ -69,7 +69,7 @@ class AllOrdersFragment: Fragment() {
     private fun setupAllOrdersRV() {
         binding.rvAllOrders.apply {
             layoutManager = LinearLayoutManager(requireContext(),RecyclerView.VERTICAL,false)
-            this.adapter = allOrdersAdapter
+            adapter = allOrdersAdapter
         }
     }
 }
