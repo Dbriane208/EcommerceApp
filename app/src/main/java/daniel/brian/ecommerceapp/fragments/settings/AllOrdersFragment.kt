@@ -64,6 +64,10 @@ class AllOrdersFragment: Fragment() {
             findNavController().navigate(action)
         }
 
+        binding.imageCloseOrders.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
     }
 
     private fun setupAllOrdersRV() {

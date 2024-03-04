@@ -12,4 +12,10 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityRegisterLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        super.onBackPressed()
+        // This will close the app when back button is pressed from LoginActivity
+        finishAffinity()
+    }
 }
