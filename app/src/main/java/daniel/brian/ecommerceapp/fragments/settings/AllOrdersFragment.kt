@@ -58,6 +58,7 @@ class AllOrdersFragment: Fragment() {
                 }
             }
         }
+
         allOrdersAdapter.onAllOrdersClick = {
             val action = AllOrdersFragmentDirections.actionAllOrdersFragment2ToOrderDetailsFragment(it)
             findNavController().navigate(action)
@@ -67,8 +68,8 @@ class AllOrdersFragment: Fragment() {
 
     private fun setupAllOrdersRV() {
         binding.rvAllOrders.apply {
-            adapter = allOrdersAdapter
-            layoutManager = LinearLayoutManager(requireContext(),RecyclerView.HORIZONTAL,false)
+            layoutManager = LinearLayoutManager(requireContext(),RecyclerView.VERTICAL,false)
+            this.adapter = allOrdersAdapter
         }
     }
 }

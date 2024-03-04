@@ -65,7 +65,7 @@ class OrderDetailsFragment: Fragment() {
             tvFullName.text = order.address.fullName
             "${order.address.street} ${order.address.city}".also { tvAddress.text = it }
             tvPhoneNumber.text = order.address.phone
-            "$${order.totalPrice}".also { tvTotalPrice.text }
+            "$${order.totalPrice}".also { tvTotalPrice.text = it }
         }
 
         // updating the products list in our adapter
@@ -78,8 +78,8 @@ class OrderDetailsFragment: Fragment() {
 
     private fun setupOrderRV() {
         binding.rvProducts.apply {
-            adapter = billingProductsAdapter
             layoutManager = LinearLayoutManager(requireContext(),RecyclerView.VERTICAL,false)
+            adapter = this@OrderDetailsFragment.billingProductsAdapter
             addItemDecoration(VerticalItemDecoration())
         }
     }

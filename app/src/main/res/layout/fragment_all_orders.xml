@@ -60,7 +60,7 @@
         app:layout_constraintGuide_percent="0.96" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_all_orders"
+        android:id="@+id/rvAllOrders"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
